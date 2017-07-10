@@ -1,0 +1,168 @@
+﻿@model List<EAD_Project.BussinessObjects.userAd>
+@{
+    Layout = "~/Views/Shared/_SubPagesLayout.cshtml";
+}
+
+<div class="total-ads main-grid-border">
+    <div class="container">
+        
+        <div class="clearfix"></div>
+        <div class="ads-grid">
+            <div class="side-bar col-md-3">
+                <div class="search-hotel">
+                    <h3 class="sear-head">Name contains</h3>
+                    <form >
+                        <input type="text" id="nameFilt" required="">
+                        <input onclick="nameFilter()" type="submit" value=" ">
+                    </form>
+                </div>
+
+                <div class="range">
+                    <h3 class="sear-head">Price range</h3>
+                    <ul class="dropdown-menu6">
+                        <li>
+
+                            <div id="slider-range"></div>
+                            <input type="text" id="amount" style="border: 0; color: #ffffff; font-weight: normal;" />
+                        </li>
+                    </ul>
+                    <!---->
+                    <script type="text/javascript" src="js/jquery-ui.js"></script>
+                    <script type='text/javascript'>
+//<![CDATA[
+                        $(window).load(function () {
+                            $("#slider-range").slider({
+                                range: true,
+                                min: 0,
+                                max: 9000,
+                                values: [50, 6000],
+                                slide: function (event, ui) {
+                                    $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                                }
+                            });
+                            $("#amount").val("$" + $("#slider-range").slider("values", 0) + " - $" + $("#slider-range").slider("values", 1));
+
+                        });//]]>
+
+                    </script>
+
+                </div>
+               
+                <div class="featured-ads">
+                    <h2 class="sear-head fer">Featured Ads</h2>
+                    <div class="featured-ad">
+                        <a href="">
+                            <div class="featured-ad-left">
+                                <img src="images/f1.jpg" title="ad image" alt="" />
+                            </div>
+                            <div class="featured-ad-right">
+                                <h4>Lorem Ipsum is simply dummy text of the printing industry</h4>
+                                <p>$ 450</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </a>
+                    </div>
+                    <div class="featured-ad">
+                        <a href="">
+                            <div class="featured-ad-left">
+                                <img src="images/f2.jpg" title="ad image" alt="" />
+                            </div>
+                            <div class="featured-ad-right">
+                                <h4>Lorem Ipsum is simply dummy text of the printing industry</h4>
+                                <p>$ 380</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </a>
+                    </div>
+                    <div class="featured-ad">
+                        <a href="">
+                            <div class="featured-ad-left">
+                                <img src="images/f3.jpg" title="ad image" alt="" />
+                            </div>
+                            <div class="featured-ad-right">
+                                <h4>Lorem Ipsum is simply dummy text of the printing industry</h4>
+                                <p>$ 560</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="ads-display col-md-9">
+                <div class="wrapper">
+                    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
+                                    <span class="text">All Ads</span>
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                <div>
+                                    <div id="container">
+                                        <div class="view-controls-list" id="viewcontrols">
+                                            <label>view :</label>
+                                            <a class="gridview"><i class="glyphicon glyphicon-th"></i></a>
+                                            <a class="listview active"><i class="glyphicon glyphicon-th-list"></i></a>
+                                        </div>
+                                        <div class="sort">
+                                            <div class="sort-by">
+                                                <label>Sort By : </label>
+                                                <select>
+                                                    <option value="">Most recent</option>
+                                                    <option value="">Price: Rs Low to High</option>
+                                                    <option value="">Price: Rs High to Low</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <ul class="list">
+                                            @foreach (var obj in Model)
+{
+    <a href="@Url.Action("single", "Home", new { id = @obj.Ad.adId }) ">
+        <li>
+            <img src="~/Uploads/@obj.Images.First().image1" title="" alt="" />
+            <section class="list-left">
+                <h5 class="title">@obj.Ad.title</h5>
+                <span class="adprice">$@obj.Ad.price</span>
+                <p class="catpath">@obj.Category » @obj.SubCateg</p>
+            </section>
+            <section class="list-right">
+                <span class="date">@obj.Ad.date.ToString("MMMM dd yyyy")</span>
+                <span class="cityname">@obj.City</span>
+            </section>
+            <div class="clearfix"></div>
+        </li>
+    </a>
+
+}
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <ul class="pagination pagination-sm">
+                                <li><a href="#">Prev</a></li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">6</a></li>
+                                <li><a href="#">7</a></li>
+                                <li><a href="#">8</a></li>
+                                <li><a href="#">Next</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

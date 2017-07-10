@@ -1,0 +1,33 @@
+﻿@{
+    Layout = null;
+}
+<div class="well " style="display:block; border-color:red; align-content:center">
+    State | City:<select style="max-width:50%" class="form-control">
+
+        
+        @{  EAD_Project.Models.Database1Entities db = new EAD_Project.Models.Database1Entities();
+
+  List<EAD_Project.Models.state> state = db.states.ToList();
+
+  foreach (EAD_Project.Models.state st in state)
+  {
+    <option onclick="setStateId(@st.stateId)" style="font-weight:bold; color:black;">@st.stateName</option>
+
+
+      var query = from cty in db.cities where cty.stateId == st.stateId select cty;
+      foreach (var obj in query)
+      {
+        <option onclick="setCityId(@obj.cityId)" style="padding-left:15px; ">@obj.cityName</option>
+      }
+
+  }
+}
+
+
+    </select>
+
+    <span class="button" onclick="deleteStateCity()" style="float: right; color: red; margin-top: -40px;"><i class="fa fa-trash"></i></span>
+
+</div>
+
+

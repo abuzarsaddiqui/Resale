@@ -1,0 +1,23 @@
+﻿@{
+    Layout = null;
+}
+<div class="well " style="display:block; border-color:red; align-content:center" >
+
+
+    State:
+    <select id="selectState"style="margin-left: 2%; margin-right:3%">
+
+        @{  EAD_Project.Models.Database1Entities db = new EAD_Project.Models.Database1Entities();
+
+          List<EAD_Project.Models.state> state = db.states.ToList();
+
+          foreach (EAD_Project.Models.state st in state)
+          {
+            <option value=@st.stateId style="font-weight:bold; color:black;">@st.stateName</option>
+          }
+        }
+    </select><br/>
+    City: <input type="text" id="addNewCity" style="max-width:30%; margin-left:4%; margin-top:3%" placeholder="Add New City" />
+    <div class="alert alert-danger" hidden="hidden" id="cityError" style="max-width:50%; margin-top:5px"> <span class="glyphicon glyphicon-exclamation-sign"></span><strong>       City Already Exist</strong></div>
+    <span  onclick="addCity()" class="button" style="float: right; color: green; margin-top:-10px "><i class="fa fa-plus"></i></span>
+</div>

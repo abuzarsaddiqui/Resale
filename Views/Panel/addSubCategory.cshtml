@@ -1,0 +1,23 @@
+﻿@{
+    Layout = null;
+}
+<div class="well " style="display:block; border-color:red; align-content:center">
+
+
+    Category:
+    <select id="selectCategory" style="margin-left: 10%; margin-right:3%">
+
+        @{  EAD_Project.Models.Database1Entities db = new EAD_Project.Models.Database1Entities();
+
+          List<EAD_Project.Models.category> categ = db.categories.ToList();
+
+          foreach (EAD_Project.Models.category cat in categ)
+          {
+            <option value=@cat.categoryId style="font-weight:bold; color:black;">@cat.categoryName</option>
+          }
+        }
+    </select><br />
+    SubCategory: <input type="text" id="addNewSubcategory" style="max-width:30%; margin-left:4%; margin-top:3%" placeholder="Add New SubCategory" />
+    <div class="alert alert-danger" hidden="hidden" id="SubCategoryError" style="max-width:50%; margin-top:5px"> <span class="glyphicon glyphicon-exclamation-sign"></span><strong>       SubCategory Already Exist</strong></div>
+    <span onclick="addSubCategory()" class="button" style="float: right; color: green; margin-top:-10px "><i class="fa fa-plus"></i></span>
+</div>

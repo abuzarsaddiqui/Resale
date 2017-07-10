@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+<div id="mySingleModal" class="modal fade" role="dialog" style="min-width:100%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class=" modal-header">
+             
+
+
+                            <h2  id ="adTitle" class="modal-title">
+                                
+                             </h2>
+              
+
+                    </div>
+                    <div class="modal-body">
+                        <span style="text-align: center; font-size: large">
+                            <p> <i class="glyphicon glyphicon-map-marker" > <span id="adState"></span>, <span id="adCity"></span></i></p>
+                            <p>Added at <span id="adDate"></span></p>
+
+                            <p >Price: $<span id="adPrice"></span></p>
+                            <p >Contact number:<span id="adPhone"></span></p>
+                        </span>
+                        <div class="flexslider">
+                            <ul class="slides" id="adImage">
+                            </ul>
+                        </div>
+                        <!-- FlexSlider -->
+                        <script defer src="~/Scripts/jquery.flexslider.js"></script>
+                        <link rel="stylesheet" href="~/css/flexslider.css" type="text/css" media="screen" />
+
+                        <script>
+                            // Can also be used with $(document).ready()
+                            $(window).load(function () {
+                                $('.flexslider').flexslider({
+                                    animation: "slide",
+                                    controlNav: "thumbnails"
+                                });
+                            });
+                        </script>
+                        <!-- //FlexSlider -->
+                        <div class="product-details" style="word-wrap:break-word;" id="adDescription">
+                            
+                        </div>
+                    </div>
+                       
+                </div>
+            </div>
+
+        </div>
+                     
+
+               

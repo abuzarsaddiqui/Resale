@@ -1,0 +1,213 @@
+﻿@model EAD_Project.Models.ad
+@{
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<div class="submit-ad main-grid-border" id="postAd">
+    <div class="container">
+        <h2 class="head">Post an Ad</h2>
+        <div class="post-ad-form">
+            <form method="post" action="~/Panel/PostAd" id="adForm" onsubmit="return validatePrice()" enctype="multipart/form-data" >
+                <label>Select Category <span>*</span></label>
+                <select class="" name="category">
+                    @{
+                        EAD_Project.Models.Database1Entities db = new EAD_Project.Models.Database1Entities();
+                        List<EAD_Project.Models.category> categories = db.categories.ToList();
+
+                        foreach (EAD_Project.Models.category category in categories)
+                        {
+                            <optgroup label=@category.categoryName>
+                                
+                                @{
+                            var query = from subCateg in db.subCategories where subCateg.categoryId == category.categoryId select subCateg;
+
+                            foreach (var obj in query)
+                            {
+                                <option value=@obj.subCategoryId>@obj.subCategoryName</option>
+                            }
+                                }
+
+                            </optgroup>
+                        }
+                    }
+
+                </select>
+                <div class="clearfix"></div>
+
+                <label>Select City <span>*</span></label>
+                <select class="" name="city">
+                    @{
+                        List<EAD_Project.Models.state> state = db.states.ToList();
+
+                        foreach (EAD_Project.Models.state st in state)
+                        {
+                            <optgroup label=@st.stateName>
+
+                                @{
+
+                            var query = from cty in db.cities where cty.stateId == st.stateId select cty;
+
+                            foreach (var obj in query)
+                            {
+                                <option value=@obj.cityId>@obj.cityName</option>
+                            }
+
+                                }
+
+                            </optgroup>
+
+                        }
+
+                    }
+
+
+                </select>
+
+                <div class="clearfix"></div>
+                <label>Ad Title <span>*</span></label>
+                <input type="text" id="teditor" name="title" class="phone" placeholder="" required="true">
+                <div class="clearfix"></div>
+                <label>Ad Description <span>*</span></label>
+                <textarea class="mess" name="description" placeholder="Write few lines about your product" required="true"></textarea>
+                <div class="clearfix"></div>
+                <div class="clearfix"></div>
+                <label>Price<span>*</span></label>
+                <input type="text" name="price" id="price" required="true" style="max-width:30%" />
+                <span  class="alert alert-danger" id="invalidPrice" hidden="true" style="top:200px"> <span class="glyphicon glyphicon-exclamation-sign"></span><strong>       Price Must be Numerical</strong></span>
+
+                <div class="clearfix"></div>
+
+                <div class="upload-ad-photos">
+                    <label>Photos for your ad :</label>
+                    <div class="photos-upload-view">
+
+                        <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+
+                        <div>
+                            <input type="file" id="fileselect" name="images" multiple />
+                            <div id="filedrag">or drop files here</div>
+                        </div>
+
+                        <div id="submitbutton">
+                            <button type="submit">Upload Files</button>
+                        </div>
+                    </div>
+                    <div class="personal-details">
+
+                        <div class="clearfix"></div>
+                        <p class="post-terms">By clicking <strong>post Button</strong> you accept our <a href="terms.html" target="_blank">Terms of Use </a> and <a href="privacy.html" target="_blank">Privacy Policy</a></p>
+                        <input type="submit" value="Post">
+                        <div class="clearfix"></div>
+
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <script src="~/Scripts/filedrag.js"></script>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<span id="AdsPortlets">
+   @{
+       //Html.RenderPartial("adsPortlets");
+   }
+</span>
+<div class="portlet-grid-page" id="viewAds">
+    <h2>Ads</h2>
+
+    @{
+        foreach(var obj in ViewBag.AllAds)
+        {
+            <div class="portlet-grid panel-primary" id=@obj.Ad.adId>
+             <div class="panel-heading">
+            <span class="panel-title" id=@("adTitle" + obj.Ad.adId)>@obj.Ad.title</span>
+            <span class="dropdown" style="float:right;">
+
+
+                <i class="btn btn-success dropdown-toggle fa fa-gear" data-toggle="dropdown" aria-haspopup="true" style="margin-top:-1%">
+                    
+                </i>
+
+                <div class="dropdown-menu pull-right " style="font-size:1em; min-width:100px; cursor: pointer;">
+                    <a href="@Url.Action("single", "Home", new { id = @obj.Ad.adId }) " class="dropdown-item" style="color:black"><div class="fa fa-eye" style="padding-left:15px"><span style="padding-left:7px">View</span></div></a>
+                    <a onclick="userOptions(@obj.Ad.adId)" class="dropdown-item" style="color:darkorange"><div class="fa fa-trash" style="padding-left:15px"><span style="padding-left:10px">Delete</span></div></a>
+                      
+                       
+                        
+                    @{if (db.ads.Find(obj.Ad.adId).sold != 1)
+{
+    //<a id="@("edit" + obj.Ad.adId)" onclick="edit(@obj.Ad.adId)" data-toggle="modal" data-target="#editModal" class="dropdown-item" style="color:cadetblue"><div class="fa fa-edit" style="padding-left:15px"><span style="padding-left:10px">Edit</span></div></a>
+    <a id="@("soldButton" + obj.Ad.adId)" onclick="sold(@obj.Ad.adId)" class="dropdown-item" style="color:forestgreen"><div class="fa fa-money" style="padding-left:13px"><span style="padding-left:8px">Sold</span></div></a>
+}
+}
+                </div>
+
+            </span>
+                 @{
+                        if (db.ads.Find(obj.Ad.adId).sold == 1)
+                        {
+                                <span  style="color:yellow; float:right; font-size:larger; font:bolder">SOLD</span>
+           
+                        }
+                        else
+                        {
+                                <span id="@("sold" + obj.Ad.adId)" hidden="hidden" style="color:yellow; float:right; font-size:larger; font:bolder">SOLD</span>
+           
+                        }
+            
+                 }
+                 
+        </div>
+        <div class="panel-body" id=@("adDescription" + obj.Ad.adId) style="word-wrap:break-word">
+            @obj.Ad.description
+        </div>
+        <div style="font-size:medium">
+            <span class="fa fa-map-marker" style="color:orange; padding-left:10px"><span style="padding-left:6px" id="adStateCity">@obj.State, @obj.City</span></span><span style="color:yellowgreen"> | </span>
+            <span class="glyphicon glyphicon-calendar" style="color:limegreen; padding-left:5px"><span style="padding-left:6px">Posted</span><span style="padding-left:6px">On</span><span style="padding-left:6px">@obj.Ad.date.ToString("MMMM dd yyyy")</span></span>
+
+        </div>
+    </div>
+    }
+            
+        }
+    
+    
+</div>
+
+<div class="clearfix"> </div>
+@{
+    Html.RenderPartial("editModal");
+}
+
+<script type="text/javascript">
+    function edit(id) {
+        var obj =  {
+            "adId" : id
+        }
+        settings =  {
+            datatype: 'json',
+            type : 'post',
+            url : 'getEditAd',
+            data : obj,
+            success: function (res){
+                console.log("su");
+                console.log(res.prce);
+                $('#editCategory').val(res.subCategId).change();
+                $('#editCity').val(res.cityId).change();
+                $('#editPrice').val(res.prce);
+                $('#editTitle').val($('#adTitle'+id).text());
+                $('#editDescription').val($('#adDescription'+id).text());
+            },
+            error:  function (res){
+                
+                console.log(res.prce);
+            },
+
+        }
+        $.ajax(settings);
+    }
+</script>

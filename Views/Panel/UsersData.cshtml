@@ -1,0 +1,46 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+<table class="table" style="width: 80%; margin-left:-3%; margin-top:3%" align="left">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>E-mail</th>
+            <th>Phone</th>
+            <th>Verified (current status)</th>
+
+        </tr>
+    </thead>
+    
+    <tbody>
+       
+        @{
+            if (ViewBag.users != null)
+            {
+                foreach (var obj in ViewBag.users)
+                {
+                    <tr>
+                        <th scope="row">@obj.name</th>
+                        <td>@obj.email</td>
+                        <td style="word-wrap:break-word">@obj.phone</td>
+
+                        @{if (obj.verified == 0)
+                        {
+                            <td ><i onclick="verifyUser(@obj.userId)" id=@obj.userId class="fa fa-close" style="color:red"></i></td>
+                        }
+
+                        else
+                        {
+                            <td><i onclick="verifyUser(@obj.userId)" id=@obj.userId class="fa fa-check" style="color:green"></i></td>
+                        }
+
+                        }
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>

@@ -1,0 +1,77 @@
+﻿@model EAD_Project.BussinessObjects.userAd
+@{
+    Layout = "~/Views/Shared/_SubPagesLayout.cshtml";
+
+}
+
+<div class="single-page main-grid-border">
+    <div class="container">
+        <div class="product-desc">
+            <div class="col-md-7 product-view">
+                <h2>@Model.Ad.title</h2>
+                <p> <i class="glyphicon glyphicon-map-marker"></i><a href="">@Model.State</a>, <a href="">@Model.City</a>| Added at @Model.Ad.date.ToString("MMMM dd yyyy")</p>
+                <div class="flexslider">
+                    <ul class="slides">
+                        @foreach (var img in Model.Images) { 
+                            <li data-thumb="~/Uploads/@img.image1">
+                                <img src="~/Uploads/@img.image1" />
+                            </li>
+                        }
+
+                        
+                    </ul>
+                </div>
+                <!-- FlexSlider -->
+                <script defer src="~/Scripts/jquery.flexslider.js"></script>
+                <link rel="stylesheet" href="~/css/flexslider.css" type="text/css" media="screen" />
+
+                <script>
+                    // Can also be used with $(document).ready()
+                    $(window).load(function () {
+                        $('.flexslider').flexslider({
+                            animation: "slide",
+                            controlNav: "thumbnails"
+                        });
+                    });
+                </script>
+                <!-- //FlexSlider -->
+                <div class="product-details">
+                    @Model.Ad.description
+                </div>
+            </div>
+            <div class="col-md-5 product-details-grid">
+                <div class="item-price">
+                    <div class="product-price">
+                        <p class="p-price">Price</p>
+                        <h3 class="rate">$ @Model.Ad.price</h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="itemtype">
+                        <p class="p-price">Item Type</p>
+                        <h4>@Model.SubCateg</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="interested text-center">
+                    <h4>Interested in this Ad?<small> Contact the Seller!</small></h4>
+                    <p><i class="glyphicon glyphicon-earphone"></i>@Model.User.phone</p>
+                </div>
+                <div class="tips">
+                    <h4>Safety Tips for Buyers</h4>
+                    <ol>
+                        <li><a href="#">Contrary to popular belief.</a></li>
+                        <li><a href="#">Contrary to popular belief.</a></li>
+                        <li><a href="#">Contrary to popular belief.</a></li>
+                        <li><a href="#">Contrary to popular belief.</a></li>
+                        <li><a href="#">Contrary to popular belief.</a></li>
+                        <li><a href="#">Contrary to popular belief.</a></li>
+                        <li><a href="#">Contrary to popular belief.</a></li>
+                        <li><a href="#">Contrary to popular belief.</a></li>
+                        <li><a href="#">Contrary to popular belief.</a></li>
+                    </ol>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

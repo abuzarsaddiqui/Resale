@@ -1,0 +1,363 @@
+﻿@{
+    Layout = null;
+}
+<div class="portlet-grid panel-primary" style="width:50%">
+    <div class="panel-heading">
+        <span class="panel-title">State | City</span>
+    </div>
+    <div class="panel-body">
+        <div class="well " style="display:block; border-color:red; align-content:center">
+            State: <input type="text" id="addState" style=" margin-left:2%" placeholder="Add New State" />
+            <span class="button" onclick="addState()" style="float: right; color: green; margin-top:-7px "><i class="fa fa-plus"></i></span>
+            <div hidden="hidden" class="alert alert-danger" id="stateError" style="max-width:45%; margin-top:8px" > <span class="glyphicon glyphicon-exclamation-sign"></span>      State Already Exist</div>
+            
+        </div>
+        
+        <span id="addCityBlock">
+            @{Html.RenderPartial("addCity");}
+        </span>
+
+        <span id="stateCityBlock">
+            @{Html.RenderPartial("stateCity");}
+        </span>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="portlet-grid panel-primary" style="width:50%">
+    <div class="panel-heading">
+        <span class="panel-title">Category</span>
+    </div>
+    <div class="panel-body">
+        <div class="well " style="display:block; border-color:red; align-content:center">
+            Category: <input type="text" id="addCategory" style=" margin-left:2%" placeholder="Add New Category" />
+            <span class="button" onclick="addCategory()"  style="float: right; color: green; margin-top:-7px "><i class="fa fa-plus"></i></span>
+            <div hidden="hidden" class="alert alert-danger" id="categoryError" style="max-width:45%; margin-top:8px"> <span class="glyphicon glyphicon-exclamation-sign"></span>      Category Already Exist</div>
+            
+                Images: <input type="file" name="categImage" id="categImage" required />
+            
+        </div>
+
+        <span id="addSubCategoryBlock">
+            @{
+                Html.RenderPartial("addSubCategory");
+            }
+        </span>
+       
+        <span id="categorySubcategoryBlock">
+            @{
+                Html.RenderPartial("categorySubcategory");
+            }
+        </span>
+
+            
+    </div>
+</div>
+
+<script type="text/javascript">
+    function addState() {
+        var obj = { "state": $('#addState').val() };
+        var settings = {
+
+            type: "POST",
+            url: "addState",
+            dataType: 'json',
+            data: obj,
+            success: function (res) {
+                if(res.isExist == 1)
+                {
+                    $('#stateError').show();
+                }
+                else {
+                    $('#stateError').hide();
+                    $('#addState').val("");
+                    addCityPartial();
+                    stateCityPartial();
+                }
+
+            },
+            error: function (res) {
+                if (res.isExist == 1) {
+                    $('#stateError').show();
+                }
+                else {
+                    $('#stateError').hide();
+                    $('#addState').val("");
+                    addCityPartial();
+                    stateCityPartial();
+                }
+            }
+        };
+        if ($('#addState').val() != "")
+        { $.ajax(settings); }
+        else {
+            alert("State Name is Required");
+        }
+
+
+    }
+
+    function addCategory() {
+        var obj = new FormData();
+       
+        obj.append("category", $('#addCategory').val());
+        obj.append("file", $('#categImage')[0].files[0]);
+        
+        var settings = {
+
+            type: "POST",
+            url: "addCategory",
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            data: obj,
+            success: function (res) {
+                if (res.isExist == 1) {
+                    $('#categoryError').show();
+                }
+                else {
+                    $('#categoryError').hide();
+                    $('#categImage').val("");
+                    $('#addCategory').val("");
+                    addSubCategoryPartial();
+                    categorySubCategoryPartial();
+                }
+
+            },
+            error: function (res) {
+                if (res.isExist == 1) {
+                    $('#categoryError').show();
+                }
+                else {
+                    $('#categoryError').hide();
+                    $('#addCategory').val("");
+                    $('#categImage').val("");
+                    addSubCategoryPartial();
+                    categorySubCategoryPartial();
+                }
+            }
+        };
+        if ($('#addCategory').val() != "")
+        {
+            $.ajax(settings);
+            
+        }
+        else {
+            alert("Category Name is Required");
+        }
+
+
+    }
+
+    function addSubCategoryPartial(){
+        var settings = {
+            type: "POST",
+            url: "addSubCategory",
+            success: function (res) {
+                $('#addSubCategoryBlock').html(res);
+            },
+            error: function (res) {
+                $('#addSubCategoryBlock').html(res);}
+        };
+
+        $.ajax(settings);
+
+    }
+    function categorySubCategoryPartial(){
+        var settings = {
+            type: "POST",
+            url: "categorySubcategory",
+            success: function (res) {
+                $('#categorySubcategoryBlock').html(res);
+            },
+            error: function (res) {
+                $('#categorySubcategoryBlock').html(res);
+            }
+        };
+
+        $.ajax(settings);
+
+    }
+
+    function addCityPartial() {
+        var settings = {
+            type: "POST",
+            url: "addCity",
+            success: function (res) {
+                $('#addCityBlock').html(res);
+            },
+            error: function (res) {
+                $('#addCityBlock').html(res);}
+        };
+
+        $.ajax(settings);
+
+    }
+
+    function stateCityPartial() {
+        var settings = {
+            type: "POST",
+            url: "stateCity",
+            success: function (res) {
+                $('#stateCityBlock').html(res);
+            },
+            error: function (res) {
+                $('#stateCityBlock').html(res);
+            }
+        };
+
+        $.ajax(settings);
+
+    }
+
+    function addSubCategory(){
+        var obj = {
+            "categId": $('#selectCategory').val(),
+            "subCateg": $('#addNewSubcategory').val()
+        };
+        var settings = {
+
+            type: "POST",
+            url: "addNewSubCategory",
+            dataType: 'json',
+            data: obj,
+            success: function (res) {
+                if (res.isExist == 1) {
+                    $('#SubCategoryError').show();
+                }
+                else {
+                    $('#SubCategoryError').hide();
+                    $('#addNewSubcategory').val("");
+                    
+                    categorySubCategoryPartial();
+                }
+
+            },
+            error: function (res) {
+                if (res.isExist == 1) {
+                    $('#SubCategoryError').show();
+                }
+                else {
+                    $('#SubCategoryError').hide();
+                    $('#addNewSubcategory').val("");
+                    categorySubCategoryPartial();
+                }
+            }
+        };
+        if ($('#addNewSubcategory').val() != "") {
+            $.ajax(settings);
+        }
+        else{
+            alert("SubCategory Name is Required");
+        }
+    }
+    function addCity() {
+        var obj = {
+            "stateId": $('#selectState').val(),
+            "city": $('#addNewCity').val()
+        };
+        var settings = {
+
+            type: "POST",
+            url: "addNewCity",
+            dataType: 'json',
+            data: obj,
+            success: function (res) {
+                if (res.isExist == 1) {
+                    $('#cityError').show();
+                }
+                else {
+                    $('#cityError').hide();
+                    $('#addNewCity').val("");
+                    
+                    stateCityPartial();
+                }
+
+            },
+            error: function (res) {
+                if (res.isExist == 1) {
+                    $('#cityError').show();
+                }
+                else {
+                    $('#cityError').hide();
+                    $('#addNewCity').val("");
+                    stateCityPartial();
+                }
+            }
+        };
+        if($('#addNewCity').val() != ""){
+            $.ajax(settings);
+        }
+        else{
+            alert("City Name is Required");
+        }
+
+    }
+
+    var stateId = -1;
+    var cityId = -1;
+    var categoryId = -1;
+    var subCategory = -1;
+
+    function setCategoryId(id){
+        categoryId = id;
+    }
+    function setSubCategoryId(id) {
+        subCategory = id;
+    }
+    function setStateId(id){
+        stateId = id;
+    }
+    function setCityId(id){
+        cityId = id;
+    }
+    function deleteCategorySubCategory(){
+        var obj = {
+            "categoryId": categoryId,
+            "subCategoryId": subCategory
+            };
+        var settings = {
+
+            type: "POST",
+            url: "deleteCategorySubCategory",
+            dataType: 'json',
+            data: obj,
+            success: function () {
+                addSubCategoryPartial();
+                categorySubCategoryPartial();
+                
+            },
+            error: function () {
+                addSubCategoryPartial();
+                categorySubCategoryPartial();
+            }
+        };
+        
+        $.ajax(settings);
+        
+    }
+    function deleteStateCity(){
+        var obj = {
+            "stateId": stateId,
+            "cityId": cityId
+        };
+        var settings = {
+
+            type: "POST",
+            url: "deleteStateCity",
+            dataType: 'json',
+            data: obj,
+            success: function () {
+                addCityPartial();
+                stateCityPartial();
+                
+            },
+            error: function () {
+                addCityPartial();
+                stateCityPartial();
+            }
+        };
+        
+        $.ajax(settings);
+        
+    }
+</script>

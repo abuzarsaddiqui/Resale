@@ -1,0 +1,102 @@
+﻿@{
+    Layout = null;
+}
+<div id="editModal" class="modal fade" role="form" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class=" modal-header">
+
+                <h2 class="modal-title">Edit Ad</h2>
+
+            </div>
+            <div class="modal-body">
+                <div class="post-ad-form" >
+                    <form method="post" action="~/Panel/PostAd" id="adForm" onsubmit="return validatePrice()" enctype="multipart/form-data">
+                        <label >Select Category <span>*</span></label>
+                        <select id="editCategory">
+                            @{
+                                EAD_Project.Models.Database1Entities db = new EAD_Project.Models.Database1Entities();
+                                List<EAD_Project.Models.category> categories = db.categories.ToList();
+
+                                foreach (EAD_Project.Models.category category in categories)
+                                {
+                                    <optgroup label=@category.categoryName>
+
+                                        @{
+                                    var query = from subCateg in db.subCategories where subCateg.categoryId == category.categoryId select subCateg;
+
+                                    foreach (var obj in query)
+                                    {
+                                        <option value=@obj.subCategoryId>@obj.subCategoryName</option>
+                                    }
+                                        }
+
+                                    </optgroup>
+                                }
+                            }
+
+                        </select>
+                        <div class="clearfix"></div>
+
+                        <label>Select City <span>*</span></label>
+                        <select  id="editCity">
+                            @{
+                                List<EAD_Project.Models.state> state = db.states.ToList();
+
+                                foreach (EAD_Project.Models.state st in state)
+                                {
+                                    <optgroup label=@st.stateName>
+
+                                        @{
+
+                                    var query = from cty in db.cities where cty.stateId == st.stateId select cty;
+
+                                    foreach (var obj in query)
+                                    {
+                                        <option value=@obj.cityId>@obj.cityName</option>
+                                    }
+
+                                        }
+
+                                    </optgroup>
+
+                                }
+
+                            }
+
+
+                        </select>
+
+                        <div class="clearfix"></div>
+                        <label>Ad Title <span>*</span></label>
+                        <input type="text" id="editTitle" class="phone" placeholder="" required="true">
+                        <div class="clearfix"></div>
+                        <label>Ad Description <span>*</span></label>
+                        <textarea class="mess" id="editDescription" placeholder="Write few lines about your product" required="true"></textarea>
+                        <div class="clearfix"></div>
+                        <div class="clearfix"></div>
+                        <label>Price<span>*</span></label>
+                        <input type="text" name="price" id="editPrice" required="true" style="max-width:30%" />
+                        <span class="alert alert-danger" id="invalidPrice" hidden="true" style="top:200px"> <span class="glyphicon glyphicon-exclamation-sign"></span><strong>       Price Must be Numerical</strong></span>
+
+                        <div class="clearfix"></div>
+
+                            <div class="personal-details">
+
+                                <input type="submit" value="EDIT">
+                                <div class="clearfix"></div>
+
+                            </div>
+
+                            <div class="clearfix"></div>
+                      
+                    </form>
+
+                </div>
+             </div>   
+       </div>
+    </div>
+
+</div>
+
+

@@ -1,0 +1,32 @@
+﻿@{
+    Layout = null;
+}
+<div class="well " style="display:block; border-color:red; align-content:center">
+    Category | SubCategory:<select style="max-width:50%" class="form-control">
+
+
+        @{  EAD_Project.Models.Database1Entities db = new EAD_Project.Models.Database1Entities();
+
+          List<EAD_Project.Models.category> categ = db.categories.ToList();
+
+          foreach (EAD_Project.Models.category cat in categ)
+          {
+            <option onclick="setCategoryId(@cat.categoryId)" style="font-weight:bold; color:black;">@cat.categoryName</option>
+
+
+              var query = from sub in db.subCategories where sub.categoryId == cat.categoryId select sub;
+              foreach (var obj in query)
+              {
+                <option onclick="setSubCategoryId(@obj.subCategoryId)" style="padding-left:15px; ">@obj.subCategoryName</option>
+              }
+
+          }
+        }
+
+
+    </select>
+
+    <span class="button" onclick="deleteCategorySubCategory()" style="float: right; color: red; margin-top: -40px;"><i class="fa fa-trash"></i></span>
+
+</div>
+

@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+<div>
+    <div class="category">
+        <div class="category-img">
+            <img src="~/images/cat1.png" title="image" alt="" />
+        </div>
+        <div class="category-info">
+            <h4>@ViewBag.CategoryObject.categoryName</h4>
+            <span>5,12,850 Ads</span>
+            <a href="All_ClassifiedAds.cshtml">View all Ads</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="sub-categories">
+        <ul>
+            @{
+                foreach(var obj in ViewBag.SubCategoryList)
+                {
+                    <li><a href="#">@obj.subCategoryName</a></li>
+                    
+                }
+            }
+            <div class="clearfix"></div>
+        </ul>
+    </div>
+</div>

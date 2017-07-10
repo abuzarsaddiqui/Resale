@@ -1,0 +1,82 @@
+﻿@model EAD_Project.Models.user
+
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    
+    
+}
+    <section>
+        <div id="page-wrapper" class="sign-in-wrapper">
+            <div class="graphs">
+                <div class="sign-in-form">
+                    <div class="sign-in-form-top">
+                        <h1>Log in</h1>
+                    </div>
+                    <div class="signin">
+                        <div class="signin-rit">
+                            <span class="checkbox1">
+                                <label class="checkbox">Forgot Password ?</label>
+                            </span>
+                            <p><a ><input type="button" onclick="ForgotPassword()" value=" Click Here" /></a> </p>
+                            <div class="clearfix"> </div>
+                        </div>
+
+
+
+                        @*<form method="post" action="Login" >*@
+                         @using (Html.BeginForm())
+                         { 
+
+
+
+                            <div class="log-input">
+                                <div class="log-input-left" >
+                                    <input type="text" name="email" id="email" class="user" placeholder="E-mail" required="true" />
+                                    <span class="alert alert-danger" id="emailError" hidden="true"> <span class="glyphicon glyphicon-exclamation-sign"></span><strong>       Invalid E-Mail Address</strong></span>
+                                    
+                                </div>
+                                
+                                <div class="clearfix"> </div>
+                            </div>
+
+                            <div class="log-input" style="padding-top:20px">
+                                <div class="log-input-left">
+                                    <input type="password" name="password" id="password" class="lock" placeholder="Password" required="true" />
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+                            <input type="submit" onclick="return Validate()" value="Log in"/>
+                         }
+                     @*    </form>*@ 
+                    </div>
+                    <div class="new_people">
+                        <h2>For New People</h2>
+                        <p>
+                            Having hands on experience in creating innovative designs,I do offer design
+                            solutions which harness.
+                        </p>
+                        <a href="/User/Register">Register Now!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<form method="post" action="~/User/ForgotPassword" id="fEmail" hidden="true">
+    <input type="text" name="email" id="fpEmail"/>
+
+</form>
+    <!--footer section start-->
+    <script type="text/javascript">
+        function ForgotPassword() {
+            console.log($('#email').val());
+            $('#fpEmail').val($('#email').val());
+            if ($('#email').val() != "") {
+                $('#fEmail').submit();
+
+            }
+            else {
+                $('#emailError').show();
+            }
+           
+        }
+    </script>
